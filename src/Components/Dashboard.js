@@ -102,7 +102,7 @@ function Dashboard() {
           </Card.Body>
         </Card>
       </Container>
-      <Container fluid className="d-flex justify-content-center" style={{ backgroundColor: '#f0f0f0',padding: '5rem'}}>
+      <Container fluid className="d-flex justify-content-center" style={{padding: '5rem'}}>
         <Form onSubmit={handleSubmit}>
           <Form.Group id='name'>
             <Form.Label>Name</Form.Label>
