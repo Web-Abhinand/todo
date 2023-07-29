@@ -9,10 +9,6 @@ import PrivateRoute from './Components/PrivateRoute';
 
 function App() {
   return (
-          <Container 
-            className='d-flex align-items-center justify-content-center'
-            style={{minHeight:'100vh'}}>
-            <div className='w-100' >
             <BrowserRouter>
               <AuthProvieder>
                 {/* <Signup /> */}
@@ -29,8 +25,6 @@ function App() {
                 </Routes>
               </AuthProvieder>
             </BrowserRouter>
-            </div>
-          </Container>
   );
 }
 export default App;
