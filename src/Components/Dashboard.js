@@ -3,14 +3,21 @@ import { Button, Card, Alert, Form,Container } from 'react-bootstrap'
 import { useAuth } from '../contexts/AuthContext'
 import { Link, useNavigate } from 'react-router-dom'
 import { db } from '../firebase'
-import { collection, doc, setDoc, getDoc, getDocs, query, where, deleteDoc } from "firebase/firestore";
+import { collection, doc, setDoc, getDoc, getDocs, query, where, deleteDoc,addDoc } from "firebase/firestore";
+import deleteIcon from '../Assets/delete_black_24dp.svg';
+import accountCircle from '../Assets/account_circle_black_24dp.svg';
+import editIcon from '../Assets/edit_black_24dp.svg';
 function Dashboard() {
   const { currentUser, logout } = useAuth()
   const [error, setError] = useState('')
   const navigate = useNavigate()
   const [todo, setTodo] = useState([]);
   const [display, setDisplay] = useState(true);
+  const [count, setCount] = useState(0);
 
+  useEffect(() => {
+    handleDisplayData();
+  }, [count]);
 
   async function handleLogout() {
     try {
@@ -22,7 +29,11 @@ function Dashboard() {
   }
   // code to enter data from form to firebase database
 
+
+  
   async function handleSubmit(event) {
+    setCount(count => count + 1);
+
     event.preventDefault();
     const name = event.target.elements.name.value;
     const todo = event.target.elements.todo.value;
@@ -39,7 +50,6 @@ function Dashboard() {
       alert(error.message);
     }
   }
-
 
   async function handleDisplayData() {
     try {
@@ -95,7 +105,8 @@ function Dashboard() {
       </header>
       <Container fluid className="d-flex justify-content-center" style={{ backgroundColor: '#f0f0f0',padding: '5rem'}}>
         <Card style={{ width: '50%' }} >
-          <Card.Body>
+          <Card.Body className="text-center">
+            <img src={accountCircle} style={{ width: '10%', mx: 'auto' }} className="mx-auto"/>
             <h2 className='text-center mb-4'>Profile</h2>
             {error && <Alert variant='danger'>{error}</Alert>}
             <p className='text-center mb-4'><strong>Email:</strong> {currentUser.email}</p>
@@ -105,8 +116,8 @@ function Dashboard() {
       <Container fluid className="d-flex justify-content-center" style={{padding: '5rem'}}>
         <Form onSubmit={handleSubmit}>
           <Form.Group id='name'>
-            <Form.Label>Name</Form.Label>
-            <Form.Control type='text' required name="name" placeholder='Enter Name'></Form.Control>
+            <Form.Label>Task Name</Form.Label>
+            <Form.Control type='text' required name="name" placeholder='Task Name'></Form.Control>
           </Form.Group>
           <Form.Group id='todo'>
             <Form.Label>Todo Task</Form.Label>
@@ -115,20 +126,23 @@ function Dashboard() {
           <Button type='submit' className='w-100 mt-4'>Submit</Button>
         </Form>
       </Container>
-      <div className='text-center mt-2'>
-        <Button onClick={handleDisplayData}>Display Data</Button>
-      </div>
+      {/* <div className='text-center mt-2'>
+        <Button onClick={handleDisplayData}>Display Task</Button>
+      </div> */}
       <div className='hello'>
         {todo.map((item) => {
           return (
             <>
-              <div className='card' style={{ marginTop: '1rem', marginBottom: '1rem' }}>
+            <Container style={{ width: '50%' }}>
+              <Card style={{ marginTop: '1rem', marginBottom: '1rem' }}>
                 <div style={{ padding: '1rem' }}>
-                  <p>Name: {item.name}</p>
+                  <p>Task Name: {item.name}</p>
                   <p style={{ marginBottom: '5px' }}>Task: {item.todoo}</p>
+                  <button onClick={handleDelete}><img src={deleteIcon} alt='delete_icon'/></button>
+                  <button><img src={editIcon} alt='edit_icon'/></button>
                 </div>
-              </div>
-              <Button onClick={handleDelete}>Delete Task</Button>
+              </Card>
+            </Container>
             </>
           )
         })}
