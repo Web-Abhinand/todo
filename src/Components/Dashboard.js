@@ -36,8 +36,6 @@ const [editIndex, setEditIndex] = useState(-1); // -1 indicates no editing is cu
 
 
   async function handleSubmit(event) {
-    setCount(count => count + 1);
-
     event.preventDefault();
     const name = event.target.elements.name.value;
     const todo = event.target.elements.todo.value;
@@ -73,6 +71,7 @@ const [editIndex, setEditIndex] = useState(-1); // -1 indicates no editing is cu
     } catch (error) {
       alert(error.message);
     }
+    setCount(count => count + 1);
   }
 
   async function handleDisplayData() {
